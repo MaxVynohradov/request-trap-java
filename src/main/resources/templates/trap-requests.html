@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Request Trap</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1>Requests List for <span th:text="${trapId}" /></h1>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>TRAP ID</th>
+        <th>PARAMS</th>
+        <th>HEADERS</th>
+        <th>BODY</th>
+        <th>UPDATED AT</th>
+        <th>CREATED AT</th>
+    </tr>
+    <tr th:each="request : ${requests}">
+        <td th:text="${request.id}">Onions</td>
+        <td th:text="${request.trapId}">2.41</td>
+        <td th:text="${request.params}">2.41</td>
+        <td th:text="${request.headers}">2.41</td>
+        <td th:text="${request.body}">2.41</td>
+        <td th:text="${request.updatedAt}">2.41</td>
+        <td th:text="${request.createdAt}">2.41</td>
+    </tr>
+</table>
+
+<p>
+    <a href="../home.html" th:href="@{/}">Return to home</a>
+</p>
+
+</body>
+
+</html>
