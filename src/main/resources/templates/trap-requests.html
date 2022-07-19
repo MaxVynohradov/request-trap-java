@@ -2,12 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Request Trap</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 </head>
 <body>
-<h1>Requests List for <span th:text="${trapId}" /></h1>
+<h1>Requests List for <span th:text="${trapId}"/></h1>
 
 <table>
+    <thead>
     <tr>
         <th>ID</th>
         <th>TRAP ID</th>
@@ -17,15 +21,18 @@
         <th>UPDATED AT</th>
         <th>CREATED AT</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="request : ${requests}">
-        <td th:text="${request.id}">Onions</td>
-        <td th:text="${request.trapId}">2.41</td>
-        <td th:text="${request.params}">2.41</td>
-        <td th:text="${request.headers}">2.41</td>
-        <td th:text="${request.body}">2.41</td>
-        <td th:text="${request.updatedAt}">2.41</td>
-        <td th:text="${request.createdAt}">2.41</td>
+        <td th:text="${request.id}"></td>
+        <td th:text="${request.trapId}"></td>
+        <td th:text="${request.params}"></td>
+        <td th:text="${request.headers}"></td>
+        <td th:text="${request.body}"></td>
+        <td th:text="${request.updatedAt}"></td>
+        <td th:text="${request.createdAt}"></td>
     </tr>
+    </tbody>
 </table>
 
 <p>
@@ -33,5 +40,36 @@
 </p>
 
 </body>
+
+<script th:inline="javascript">
+    var trapId = [[${trapId}]];
+    function connect(trapId) {
+        const socket = new SockJS('/websocket-sockjs-stomp');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/' + trapId, function (message) {
+                const body = JSON.parse(message.body);
+                console.log(body);
+                $(`
+                    <tr>
+                        <td>${body.id}</td>
+                        <td>${body.trapId}</td>
+                        <td>${body.params}</td>
+                        <td>${body.headers}</td>
+                        <td>${body.body}</td>
+                        <td>${body.updatedAt}</td>
+                        <td>${body.createdAt}</td>
+                    </tr>
+                `).prependTo("table > tbody");
+            });
+        });
+    }
+
+    $(function () {
+        connect(trapId);
+    });
+
+</script>
 
 </html>

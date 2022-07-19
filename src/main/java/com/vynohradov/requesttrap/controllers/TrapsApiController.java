@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
@@ -18,7 +19,10 @@ import java.util.Map;
 @RequestMapping("/api/traps")
 public class TrapsApiController {
 
+    private static final String WS_DESTINATION = "/topic/";
+
     private RequestDataService requestDataService;
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @GetMapping("/{trapId}/requests")
     @ResponseStatus(code = HttpStatus.OK)
@@ -35,7 +39,9 @@ public class TrapsApiController {
             @RequestParam Map<String, String> params,
             HttpEntity<String> httpEntity
     ) {
-        return requestDataService.saveGetRequest(trapId, params, httpEntity.getHeaders());
+        var data = requestDataService.saveGetRequest(trapId, params, httpEntity.getHeaders());
+        simpMessagingTemplate.convertAndSend(getWsDestinationPath(trapId), data);
+        return data;
     }
 
     @RequestMapping(path = "/{trapId}/**", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
@@ -45,7 +51,13 @@ public class TrapsApiController {
             @RequestParam Map<String, String> params,
             HttpEntity<String> httpEntity
     ) {
-        return requestDataService.saveRequestWithBody(trapId, params, httpEntity.getHeaders(), httpEntity.getBody());
+        var data = requestDataService.saveRequestWithBody(trapId, params, httpEntity.getHeaders(), httpEntity.getBody());
+        simpMessagingTemplate.convertAndSend(getWsDestinationPath(trapId), data);
+        return data;
+    }
+
+    private String getWsDestinationPath(String trapId) {
+        return WS_DESTINATION + trapId;
     }
 
 }
