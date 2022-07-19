@@ -19,7 +19,7 @@ import java.util.Map;
 @RequestMapping("/api/traps")
 public class TrapsApiController {
 
-    private static final String WS_DESTINATION = "/topic/";
+    static final String WS_DESTINATION = "/topic/";
 
     private RequestDataService requestDataService;
     private SimpMessagingTemplate simpMessagingTemplate;
