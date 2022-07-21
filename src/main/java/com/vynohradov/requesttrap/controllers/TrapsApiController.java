@@ -13,6 +13,10 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+
 @AllArgsConstructor()
 @Slf4j
 @RestController
@@ -33,7 +37,6 @@ public class TrapsApiController {
     }
 
     @GetMapping("/{trapId}/**")
-    @ResponseStatus(code = HttpStatus.OK)
     public RequestDataDto getTrapEndpoint(
             @PathVariable(required = true) String trapId,
             @RequestParam Map<String, String> params,
@@ -44,7 +47,7 @@ public class TrapsApiController {
         return data;
     }
 
-    @RequestMapping(path = "/{trapId}/**", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+    @RequestMapping(path = "/{trapId}/**", method = {POST, PUT, DELETE})
     @ResponseStatus(code = HttpStatus.OK)
     public RequestDataDto bodyTrapEndpoint(
             @PathVariable @NotBlank String trapId,

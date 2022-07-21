@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
+
 @EnableJpaAuditing
 @Configuration
 public class ApplicationConfiguration {
@@ -14,7 +16,7 @@ public class ApplicationConfiguration {
         var modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
                 .setFieldMatchingEnabled(true)
-                .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
+                .setFieldAccessLevel(PRIVATE);
         return modelMapper;
     }
 }

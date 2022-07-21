@@ -10,9 +10,6 @@ info:
 server:
   port: 8080
 spring:
-  profiles:
-    - development
-    - testing
   jpa:
     hibernate:
       ddl-auto: create

@@ -12,6 +12,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -35,14 +36,20 @@ public class TrapsApiControllerTest {
 
     @Test
     public void successCheckListRequests() throws Exception {
+        // given
         var trapId = "test";
-        var data  = new RequestDataDto();
+        var data = new RequestDataDto();
         data.setTrapId(trapId);
-        var mockedRequestsList = Arrays.asList(data);
+        var mockedRequestsList = List.of(data);
+
+        // when
         when(requestDataService.getRequestsListByTrapId(trapId)).thenReturn(mockedRequestsList);
         doNothing().when(simpMessagingTemplate).convertAndSend(TrapsApiController.WS_DESTINATION + trapId, mockedRequestsList);
 
-        this.mockMvc.perform(get("/api/traps/%s/requests".formatted(trapId))).andDo(print()).andExpect(status().isOk());
+        // then
+        this.mockMvc.perform(get("/api/traps/%s/requests".formatted(trapId)))
+                .andDo(print())
+                .andExpect(status().isOk());
 
     }
 }

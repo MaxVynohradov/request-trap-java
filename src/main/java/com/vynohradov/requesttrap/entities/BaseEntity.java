@@ -17,11 +17,11 @@ public class BaseEntity {
     @Column(name = "id", length = 12, nullable = false)
     private Long id;
 
-    @Column(name = "created_at", updatable = false)
+    @Column(updatable = false)
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @Column()
     @LastModifiedDate
     private LocalDateTime updatedAt;
 

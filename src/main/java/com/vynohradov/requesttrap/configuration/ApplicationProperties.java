@@ -1,5 +1,6 @@
 package com.vynohradov.requesttrap.configuration;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,9 +11,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
 
-@Getter
-@Setter
-@ToString
+@Data
 @Validated
 @Configuration
 @EnableConfigurationProperties
@@ -32,6 +31,7 @@ public class ApplicationProperties {
     @Getter
     @Setter
     public static class Java {
+
         @NotEmpty
         private String version;
     }
