@@ -54,7 +54,10 @@ public class TrapsApiController {
             @RequestParam Map<String, String> params,
             HttpEntity<String> httpEntity
     ) {
-        var data = requestDataService.saveRequestWithBody(trapId, params, httpEntity.getHeaders(), httpEntity.getBody());
+        var data = requestDataService.saveRequestWithBody(trapId,
+                                                          params,
+                                                          httpEntity.getHeaders(),
+                                                          httpEntity.getBody());
         simpMessagingTemplate.convertAndSend(getWsDestinationPath(trapId), data);
         return data;
     }

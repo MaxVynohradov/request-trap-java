@@ -1,8 +1,6 @@
 package com.vynohradov.requesttrap.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +12,9 @@ import javax.validation.constraints.Size;
 @Entity
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@Getter
+@Setter
 @Table(
         name = "REQUESTS",
         indexes = {
