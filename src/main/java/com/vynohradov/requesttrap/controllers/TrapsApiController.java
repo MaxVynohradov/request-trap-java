@@ -37,7 +37,7 @@ public class TrapsApiController {
     }
 
     @GetMapping("/{trapId}/**")
-    public RequestDataDto getTrapEndpoint(
+    public RequestDataDto trapGetRequest(
             @PathVariable(required = true) String trapId,
             @RequestParam Map<String, String> params,
             HttpEntity<String> httpEntity
